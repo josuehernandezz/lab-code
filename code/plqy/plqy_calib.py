@@ -4,19 +4,17 @@ import numpy as np
 import helper as h
 import temp_helper as th
 
+save_name = 'calib_plot'
+save_path = '/Users/josuehernandez/Downloads/' + save_name
+
 # Calibration Data paths
 calib_paths = '''
-/Users/josuehernandez/Downloads/plqy_data/1_st_calibration_000.ssdat
-/Users/josuehernandez/Downloads/plqy_data/2nd_calibration_000.ssdat
-/Users/josuehernandez/Downloads/plqy_data/3rd_calibration_000.ssdat
-/Users/josuehernandez/Downloads/plqy_data/3rd_calibration_001.ssdat
-/Users/josuehernandez/Downloads/plqy_data/4th_calibration_000.ssdat
-/Users/josuehernandez/Downloads/plqy_data/5th_calibration_000.ssdat
-/Users/josuehernandez/Downloads/plqy_data/6th_calibration_000.ssdat
-/Users/josuehernandez/Downloads/plqy_data/7th_calibration_000.ssdat
-/Users/josuehernandez/Downloads/plqy_data/8th_calibration_000.ssdat
-/Users/josuehernandez/Downloads/plqy_data/9th_calibration_000.ssdat
+/Users/josuehernandez/Downloads/Correction.txt
 '''.split()
+
+# calib_paths = '''
+# /Users/josuehernandez/Downloads/new_Correction.txt
+# '''.split()
 
 for i in np.arange(len(calib_paths)):
     calib_path = calib_paths[i]
@@ -27,11 +25,12 @@ for i in np.arange(len(calib_paths)):
     x = calib_data.iloc[:, 0]
     y = calib_data.iloc[:, 1]
 
-    plt.plot(x,y, label='Calib File ' + str(i))
+    plt.plot(x,y, label='Old Calibration ' + str(i+1))
 
     plt.xlim([350, 1000])
     plt.title('PLQY Calibration')
     plt.xlabel('Wavelength (nm)')
     plt.ylabel('Intensity (a.u.)')
     plt.legend()
+    # plt.savefig(save_path, dpi=1200)
 plt.show()
