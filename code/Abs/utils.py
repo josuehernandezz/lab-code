@@ -88,6 +88,20 @@ def calculate_concentration(absorbance, pl_intensity, pl_max_wavelength: float =
     b : float, optional
         The approximate cube edge length of the nanocrystals (in nm). Default is 8.32 nm.
 
+    Optional kwargs
+    ---------------
+    dilution_factor : bool
+        If true the function will calculate the dilution but `v_1` and `v_2` must be supplied.
+    
+    v_1 : int, optional
+        The volume of stock concentration added. Usually a small amount that is going to be diluted.
+        For example, 50 uL diluted in 2000uL (v_1 would be 50uL)
+
+    v_2 : int, optional
+        The total volume of the solvent added plus the small amount of stock solution. For example,
+        a solution made of 50 uL of stock diluted with 2000 uL of hexane would have a total volume
+        of 2050 uL (v_2 would be 2050 uL)
+
     Returns
     -------
     float
@@ -124,18 +138,25 @@ def calculate_concentration(absorbance, pl_intensity, pl_max_wavelength: float =
     else:  # wavelength is between 508 and 512 (inclusive)
         b = 8.32
 
-    ε = 0.052 * (b ** 3) # nm^3 cm^-1 µM^-1
-    c = absorbance / (ε * 1) # multiply by 1 cm
-
-    if dilution_factor:
-        dilute_concentration = "{:.2E}".format(c) + ' µM'
-        stock_concentration = "{:.2}".format((c * v_2) / v_1) + ' µM'
-        print(f'The dilute PNC concentration is: {dilute_concentration}')
-        return print(f'The stock PNC concentration is: {stock_concentration}')
+    if absorbance >= 1:
+        print('Cannot calculate concentration of nanocrystals at this absorbance.')
+        print(f'Absorbance is greater than one: {absorbance}')
+        return absorbance
     else:
-        # Format the number in scientific notation
-        dilute_concentration = "{:.2E}".format(c) + ' µM'
-        return print(f'The PNC concentration is: {dilute_concentration}')
+        ε = 0.052 * (b ** 3) # nm^3 cm^-1 µM^-1
+        c = absorbance / (ε * 1) # multiply by 1 cm
+
+        if dilution_factor:
+            concentration = "{:.2E}".format(c) + ' µM'
+            stock_concentration = "{:.2}".format((c * v_2) / v_1) + ' µM'
+            print(f'The dilute PNC concentration is: {concentration}')
+            print(f'The stock PNC concentration is: {stock_concentration}')
+            return concentration
+        else:
+            # Format the number in scientific notation
+            concentration = "{:.2E}".format(c) + ' µM'
+            print(f'The PNC concentration is: {concentration}')
+            return concentration
 
 def fwhm(pl_wave, pl_int):
 

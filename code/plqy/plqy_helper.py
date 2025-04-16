@@ -171,4 +171,4 @@ def plot_scatter_with_lines(data, title='Scatter Plot', xlabel=r'CsPbBr$_3$ Conc
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
     plt.xlim([0, np.max(concentrations) + 0.025 * np.max(concentrations)])
-    plt.legend() 
+    # plt.legend() 
